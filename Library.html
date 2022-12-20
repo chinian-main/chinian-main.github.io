@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>library</title>
+    <!-- <link rel="stylesheet" href="./bootstrap-3.4.1/dist/css/bootstrap.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+</head>
+<body>
+
+    <div class="app">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>图书管理系统</h2>
+            </div>
+            <div class="panel-body form-inline">
+                <label >id:<input type="text" class="form-control"  v-model="id" ></label>
+                <label >图书名称:<input type="text" class="form-control" v-model="name" ></label>
+                <label >图书价钱:<input type="text" class="form-control" v-model="price" ></label>
+                <input type="button" value="添加" class="btn btn-primary" @click="add">
+            </div>
+        
+        <table  class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>图书名称</th>
+                    <th>价钱</th>
+                    <th>添加时间</th> 
+                    <th>购买</th>
+                    <th>操作</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in arr" :key="item.id">
+                <td v-text="item.id"></td>
+                <td v-text="item.name"></td>
+                <td v-text="item.price"></td>
+                <td v-text="item.time"></td>
+                <td>
+                    <input type="checkbox"  :value=item.price v-model="selectedBooks">
+                </td>
+                 <td><a href="" @click.prevent="del(item.id)">删除</a></td> 
+                 </tr>
+          
+            </tbody>
+        </table>
+        <div align="center" class="panel-heading">
+            <h1>总价：{{cost}}</h1>
+            <input type="button" value="购买" class="btn btn-success" @click="buy">
+        </div>
+    </div>
+    </div>
+
+    <script>
+        
+        var vm =new Vue({
+            el:'.app',
+            
+            data:{
+                arr:[
+                    {id:1,name:'三国演义',price:45,time:new Date()},
+                    {id:2,name:'水浒传',price:78,time:new Date()},
+                    {id:3,name:'红楼梦',price:60,time:new Date()},
+                    {id:4,name:'西游记',price:39,time:new Date()},
+                    {id:5,name:'3D游戏开发',price:59,time:new Date()},
+                ],
+                selectedBooks:[],
+                id:'',
+                name:'',
+                price:'',
+            },
+            computed:{
+                cost(){
+                    let t=0;
+                    this.selectedBooks.forEach(element => {
+                        t+=parseInt(element);
+                       console.log(element);
+                    });
+                     return t;
+                }
+            }
+            ,
+            methods:{
+                add(){
+                    this.arr.push({
+                        id:this.id,
+                        name:this.name,
+                        price:this.price,
+                        time:new Date()
+                    })
+                    this.id=this.name=this.price='';
+                },
+                del(id){
+                    var index=this.arr.findIndex(item=>{
+                        if(item.id==id)return true;
+                    })
+                    this.arr.splice(index,1);
+                },
+                buy(){
+                    alert("购买成功,共消费："+this.cost);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
